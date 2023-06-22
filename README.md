@@ -1,0 +1,2 @@
+# OpenStack_Swift_network_disk
+基于OpenStack云存储Swift的在线网盘
