@@ -1,0 +1,349 @@
+{% extends "base.html" %} {% block style %}
+<style>
+  body,
+  html {
+    min-height: 100%;
+  }
+
+  .modal-backdrop {
+    position: unset !important;
+  }
+</style>
+{% endblock %}{% block Content %}
+<!-- start: Content -->
+<div id="content" class="span10">
+  <ul class="breadcrumb">
+    <li>
+      <i class="icon-home"></i>
+      <a href="/cre_cred/">Home</a>
+      <i class="icon-angle-right"></i>
+    </li>
+    <li><a href="/usr/" target="_self">用户</a></li>
+    <i class="icon-angle-right"></i>
+    <li><a href="/prouser/" target="_self">验证</a></li>
+  </ul>
+
+  <div class="row-fluid">
+    <div class="panel panel-default">
+      <!-- Default panel contents -->
+      <div class="panel-heading">
+        <tr>
+          <!-- <form action="/cre_user/" method="post">
+            	<input type="text" name="user_name" placeholder="用户名称"/>
+                <input type="text" name="user_description" placeholder="项目描述"/>
+                <button type="submit" class="btn btn-default btn-sm">
+                	<span class="glyphicon glyphicon-plus"></span> 创建项目
+            	</button>
+        	</form> -->
+          <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#createModal"
+            data-whatever="Create User">
+            创建用户
+          </button>
+          <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#ReModal"
+            data-whatever="Register User">
+            注册用户
+          </button>
+        </tr>
+      </div>
+    </div>
+  </div>
+
+  <div class="row-fluid">
+    <div class="box span12">
+      <div class="box-header" data-original-title>
+        <h2>
+          <i class="fa fa-user-circle-o"></i>
+          <span class="break"></span>
+          用户
+        </h2>
+        <div class="box-icon">
+          <a href="#" class="btn-setting"><i class="halflings-icon wrench"></i></a>
+          <a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
+          <a href="#" class="btn-close"><i class="halflings-icon remove"></i></a>
+        </div>
+      </div>
+      <div class="box-content">
+        <table id="tabsb" class="table table-striped table-bordered bootstrap-datatable datatable">
+          <thead>
+            <tr>
+              <th>名称</th>
+              <th>描述</th>
+              <th>用户标识</th>
+              <th>域名</th>
+              <th>已启用</th>
+              <th><span class="label label-success">Actions</span></th>
+            </tr>
+          </thead>
+          {% for usr in userinfo %}
+          <tbody>
+            <tr>
+              <td>{{usr.name}}</td>
+              <td>{{usr.description}}</td>
+              <td>{{usr.id}}</td>
+              <td>{{usr.domain_name}}</td>
+              <td>{{usr.enabled}}</td>
+              <td>
+                <!-- Single button -->
+                <div class="btn-group">
+                  <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    管理用户
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a class="btn btn-danger" data-toggle="modal" data-target="#{{usr.id}}">
+                        <i class="halflings-icon white trash"></i>
+                        &nbsp;&nbsp;删除
+                      </a>
+                    </li>
+                    <li>
+                      <a class="btn btn-info" data-toggle="modal" data-target="#{{usr.id}}d" data-whatever="{{usr.id}}">
+                        <i class="halflings-icon white edit"></i>
+                        &nbsp;&nbsp;编辑
+                      </a>
+                    </li>
+                    <li>
+                      <a class="btn btn-warning" data-toggle="modal" data-target="#{{usr.id}}p"
+                        data-whatever="{{usr.id}}">
+                        <i class="fa fa-cogs white"></i>
+                        &nbsp;&nbsp;更改密码
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                {% comment %}
+                <a class="btn btn-success" href="#">
+                  <i class="halflings-icon white zoom-in"></i>
+                </a>
+                <a class="btn btn-info" href="#">
+                  <i class="halflings-icon white edit"></i>
+                </a>
+                <a class="btn btn-danger" href="#">
+                  <i class="halflings-icon white trash"></i>
+                </a>
+                {% endcomment %}
+              </td>
+
+              <!-- Button trigger modal -->
+              <!-- <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#{{usr.id}}">删除</button> -->
+              <!-- deleteModal -->
+              <div class="modal fade" id="{{usr.id}}" tabindex="-1" role="dialog"
+                aria-ldp.usr.nameabelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                      <h4 class="modal-title" id="myModalLabel">操作提示：</h4>
+                    </div>
+                    <form method="post" action="/del_user/">
+                      <div class="modal-body">
+                        <div class="form-group">
+                          <label for="recipient-name" class="control-label">确认删除？</label>
+                          <p>{{usr.name}}</p>
+                        </div>
+                        <div class="form-group">
+                          <label for="message-text" class="control-label">ID:</label>
+                          <input type="text" class="form-control" id="recipient-name" value="{{usr.id}}" readonly="readonly" style="min-width: 78%"
+                            name="user_id" />
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary">确认</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <!-- updateModal -->
+              <div class="modal fade updateModal" id="{{usr.id}}d" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                      <h4 class="modal-title" id="exampleModalLabel">操作提示：</h4>
+                    </div>
+                    <form method="post" action="/upd_user/">
+                      <div class="modal-body">
+                        <div class="form-group">
+                          <label for="message-text" class="control-label">ID:</label>
+                          <input class="update form-control" id="recipient-name" name="user_id" readonly="readonly"
+                            style="min-width: 78%" />
+                          <label for="recipient-name" class="control-label">用户名称：</label>
+                          <input type="text" name="user_name" placeholder="{{usr.name}}" />
+                        </div>
+                        <div class="form-group">
+                          <label for="message-text" class="control-label">用户描述：</label>
+                          <input type="text" name="user_description" placeholder="{{dp.usr.description}}" />
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary">确认</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <!-- updateModal1 更改密码 -->
+              <div class="modal fade updateModal1" id="{{usr.id}}p" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                      <h4 class="modal-title" id="exampleModalLabel">操作提示：</h4>
+                    </div>
+                    <form method="post" action="/update_pwd/">
+                      <div class="modal-body">
+                        <div class="form-group">
+                          <label for="message-text" class="control-label">ID:</label>
+                          <input class="update form-control" id="recipient-name" name="user_id" readonly="readonly"
+                            style="min-width: 78%" />
+                          <label for="recipient-name" class="control-label">当前密码：</label>
+                          <input type="text" name="password" placeholder="" />
+                        </div>
+                        <div class="form-group">
+                          <label for="message-text" class="control-label">新密码：</label>
+                          <input type="text" name="new_password" placeholder="" />
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary">确认</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </tr>
+          </tbody>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- createModal -->
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="exampleModalLabel">操作提示：</h4>
+      </div>
+      <form method="post" action="/cre_user/">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="recipient-name" class="control-label">用户名称：</label>
+            <input type="text" name="user_name" placeholder="user name" />
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="control-label">用户密码：</label>
+            <input type="text" name="user_password" placeholder="user password" />
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="control-label">用户描述：</label>
+            <input type="text" name="user_description" placeholder="user description" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="submit" class="btn btn-primary">确认</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- ReModal -->
+<div class="modal fade" id="ReModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="exampleModalLabel">操作提示：</h4>
+      </div>
+      <form method="post" action="/register/">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="recipient-name" class="control-label">用户名称：</label>
+            <input type="text" name="user_name" placeholder="user name" />
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="control-label">用户密码：</label>
+            <input type="text" name="user_password" placeholder="user password" />
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="control-label">用户描述：</label>
+            <input type="text" name="user_description" placeholder="user description" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="submit" class="btn btn-primary">确认</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %} {% block script %}
+<script type="text/javascript" language="JavaScript">
+  $('#createModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); // Button that triggered the modal
+    var recipient = button.data('whatever'); // Extract info from data-* attributes
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    var modal = $(this);
+    modal.find('.modal-title').text('操作为： ' + recipient);
+    /*modal.find('.modal-body .update').val(recipient)*/
+  });
+  $('#ReModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); // Button that triggered the modal
+    var recipient = button.data('whatever'); // Extract info from data-* attributes
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    var modal = $(this);
+    modal.find('.modal-title').text('操作为： ' + recipient);
+    /*modal.find('.modal-body .update').val(recipient)*/
+  });
+  $('.updateModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); // Button that triggered the modal
+    var recipient = button.data('whatever'); // Extract info from data-* attributes
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    var modal = $(this);
+    modal.find('.modal-title').text('操作为： ' + 'Update User');
+    modal.find('.modal-body .update').val(recipient);
+  });
+  $('.updateModal1').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); // Button that triggered the modal
+    var recipient = button.data('whatever'); // Extract info from data-* attributes
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    var modal = $(this);
+    modal.find('.modal-title').text('操作为： ' + 'Update User Password');
+    modal.find('.modal-body .update').val(recipient);
+  });
+  function del() {
+    var msg = '您真的确定要删除吗？\n\n请确认！';
+    if (confirm(msg) == true) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+</script>
+{% endblock %}

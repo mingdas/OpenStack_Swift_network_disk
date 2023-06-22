@@ -1,0 +1,17 @@
+1，打开腾讯网游加速器
+2，浏览器登录steam
+3，商店页随便加购物车一个游戏
+4，购物车页面修改国家
+5，F12打开浏览器控制台console，输入
+jQuery.post(
+                        '//store.steampowered.com/checkout/addfreelicense',
+                        {
+                                action: 'add_to_cart',
+                                sessionid: g_sessionID,
+                                subid:94404
+                        }
+                )
+回车确认
+6，然后打开https://store.steampowered.com/account/licenses/，看看有没有添加成功
+7，添加成功，关闭魔法上网
+8，打开浏览器地址栏输入steam://install/444090，确认后自动打开steam等待下载(如果没有反应请更换浏览器尝试，IE一般都可以)。

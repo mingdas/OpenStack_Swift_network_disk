@@ -1,0 +1,140 @@
+@primary : #FEDC2A ;
+@complementary :#5A3B5D;
+@lightsep: rgb(220, 220, 220);
+
+.wrapper {
+  width: 100%;
+  perspective: 800;
+}
+
+.cube {
+  position: relative;
+  top: 40px;
+  margin: 0 auto;
+  height: 30px;
+  width: 30px;
+  text-align: center;
+  animation : spin 5s infinite linear;
+  transform-style: preserve-3d;
+}
+
+@keyframes spin {
+  from { transform: rotateY(0) rotateX(0); }
+  to   { transform: rotateY(-360deg) rotateX(360deg); }
+}
+
+.cube > div {
+  position: absolute;
+  height: 30px;
+  width: 30px;
+  border: 1px solid #333;
+  opacity: .8;
+}
+
+.cube > div:hover {
+  opacity: 1;
+  transition: opacity .3s linear;
+}
+
+.one { 
+  transform: rotateX(90deg) translateZ(15px); 
+  background-color: #E3493B;
+}
+
+.two { 
+  transform: translateZ(15px); 
+  background-color: #23B5AF;
+}
+
+.three { 
+  transform: rotateY(90deg) translateZ(15px); 
+  background-color: #E8487F;
+}
+
+.four { 
+  transform: rotateY(180deg) translateZ(15px); 
+  background-color: #28B78D;
+}
+
+.five { 
+  transform: rotateY(-90deg) translateZ(15px); 
+  background-color: #FF5B00;
+}
+
+.six { 
+  transform: rotateX(-90deg) translateZ(15px); 
+  background-color: #FEEB51;
+}
+
+.checkbox + label:before {
+    background: rgb(255, 255, 255);
+    border: 1px solid rgb(216, 216, 216);
+}
+
+
+.checkbox:checked + label:before {
+    background: @complementary;
+    border-color: @complementary;
+}
+
+/* applying transition */
+.checkbox + label:before {
+    transition: 
+      background .2s, 
+      border-color .2s;
+    /* double transition, yup ! */  
+}
+
+.checkbox:not(:checked) + label:after {
+    transform: scale(0);
+}
+.checkbox:checked + label:after {
+    transform: scale(1);
+}
+.checkbox + label:after {
+    transition: transform .4s;
+}
+
+@keyframes shakeMe {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    20%,
+    60% {
+        transform: translateX(-10px);
+    }
+    40%,
+    80% {
+        transform: translateX(10px);
+    }
+}
+
+
+.errors {
+    animation-name: shakeMe;
+    animation-duration: .5s;
+}
+
+ body {
+    border-radius: 10px 10px 0px 0px;
+  	background-image: url(/static/img/leaf.png);
+    font-family: 'Raleway', sans-serif;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.form {
+    /* overflow: hidden; */
+    background: rgba(255,114,96,1);
+    background: linear-gradient(45deg, 
+    rgba(255,114,96,1) 0%, 
+    rgba(255,114,96,1) 14%, 
+    rgba(252,210,113,1) 54%, 
+    rgba(252,210,113,1) 61%, 
+    rgba(102,176,102,1) 93%, 
+    rgba(96,135,134,1) 100%);    
+}

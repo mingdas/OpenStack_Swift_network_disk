@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}登录{% endblock %}
+{% block bcss %}
+    <!-- Bootstrap core CSS -->
+    <link href="/static/bs/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/bs/css/signin.css" rel="stylesheet">
+{% endblock %}
+
+{% block style %}{% endblock %}
+{% block header %}{% endblock %}
+
+{% block content %}
+<div class="form" id="loginform">
+<div class="wrapper">
+  <div class="cube">
+    <div class="one"></div>
+    <div class="two"></div>
+    <div class="three"></div>
+    <div class="four"></div>
+    <div class="five"></div>
+    <div class="six"></div>
+  </div>
+</div>
+    <h1> Login </h1>
+    <form method="post">
+        <p class="email">
+            <label for="inputEmail">用户名  <span>*</span></label>
+            <input class="input" required type="name" id="inputEmail" name="username" placeholder="Username"/>
+        </p>
+        <p class="password">
+            <label for="inputPassword">密码 <span>*</span></label>
+            <input class="input" required type="password" id="inputPassword" name="password" placeholder="Password" />
+        </p>
+      <p class="login">
+        <input type="submit" value="Login" />
+      </p>
+    </form>
+</div>
+{% endblock %}

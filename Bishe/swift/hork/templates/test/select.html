@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 引用 Bootstrap 和 jQuery 库以及 Bootstrap-select 插件的 CSS 和 JS 文件 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <!-- 前端实现代码：
+HTML：
+
+```html -->
+<select class="selectpicker" id="myselect"></select>
+<!-- ```
+
+JavaScript：
+
+```javascript -->
+
+<script>
+    $(document).ready(function() {
+    // ajax获取数据
+    $.ajax({
+        url: '/get_data/',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // 初始化selectpicker
+            $('.selectpicker').selectpicker();
+            // 遍历数据添加option
+            $.each(data, function(index, item) {
+                $('#myselect').append($('<option></option>').attr('value', item.value).text(item.text));
+            });
+            // 判断是否存在选中项
+            var selectedValue = sessionStorage.getItem('key');
+            console.log(selectedValue);
+            if (selectedValue === null) {
+                // 默认选中第一项
+                $('#myselect').selectpicker('val', data[0].value);
+                // 将选中项设置为session
+                sessionStorage.setItem('selectedValue', data[0].value);
+                // 发送选中项数据到Django
+                $.ajax({
+                    url: '/set_selected_value/',
+                    type: 'POST',
+                    data: {
+                        'selectedValue': data[0].value
+                    },
+                    dataType: 'json',
+                    success: function(result) {
+                        console.log('选中项已设置为' + data[0].value);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            } else {
+                // 选中session存储的值
+                $('#myselect').selectpicker('val', selectedValue);
+            }
+            // 监听选项改变
+            $('#myselect').on('changed.bs.select', function(e, clickedIndex, isSelected, previousValue) {
+                // 获取选中项的值
+                var selectedValue = $(this).val();
+                // 将选中项设置为session
+                sessionStorage.setItem('selectedValue', selectedValue);
+                // 发送选中项数据到Django
+                $.ajax({
+                    url: '/set_selected_value/',
+                    type: 'POST',
+                    data: {
+                        'selectedValue': selectedValue
+                    },
+                    dataType: 'json',
+                    success: function(result) {
+                        console.log('选中项已设置为' + selectedValue);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            });
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+});
+</script>
+
+<!-- <script>
+$(document).ready(function() {
+    // ajax获取数据
+    $.ajax({
+        url: '/get_data/',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // 初始化selectpicker
+            $('.selectpicker').selectpicker({
+                liveSearch: true,
+                title: '请选择'
+            });
+            // 遍历数据添加option
+            $.each(data, function(index, item) {
+                $('.selectpicker').append($('<option></option>').attr('value', item.value).text(item.text));
+            });
+            // 判断是否存在选中项
+            var selectedValue = sessionStorage.getItem('selectedValue');
+            if (selectedValue === null) {
+                // 默认选中第一项
+                $('.selectpicker').selectpicker('val', data[0].value);
+                // 将选中项设置为session
+                sessionStorage.setItem('selectedValue', data[0].value);
+                // 发送选中项数据到Django
+                $.ajax({
+                    url: '/set_selected_value/',
+                    type: 'POST',
+                    data: {
+                        'selectedValue': data[0].value
+                    },
+                    dataType: 'json',
+                    success: function(result) {
+                        console.log('选中项已设置为' + data[0].value);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            } else {
+                // 选中session存储的值
+                $('.selectpicker').selectpicker('val', selectedValue);
+            }
+            // 监听选项改变
+            $('.selectpicker').on('changed.bs.select', function(e, clickedIndex, isSelected, previousValue) {
+                // 获取选中项的值
+                var selectedValue = $(this).val();
+                // 将选中项设置为session
+                sessionStorage.setItem('selectedValue', selectedValue);
+                // 发送选中项数据到Django
+                $.ajax({
+                    url: '/set_selected_value/',
+                    type: 'POST',
+                    data: {
+                        'selectedValue': selectedValue
+                    },
+                    dataType: 'json',
+                    success: function(result) {
+                        console.log('选中项已设置为' + selectedValue);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            });
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+});
+</script> -->
+<!-- ```
+
+Django的代码：
+
+```python
+from django.shortcuts import render
+from django.http import JsonResponse, HttpResponse
+
+def get_data(request):
+    # 模拟数据
+    data = [
+        {'value': '1', 'text': '选项1'},
+        {'value': '2', 'text': '选项2'},
+        {'value': '3', 'text': '选项3'},
+    ]
+    return JsonResponse(data, safe=False)
+
+def set_selected_value(request):
+    if request.method == 'POST':
+        selected_value = request.POST.get('selectedValue')
+        # 将选中项存入session
+        request.session['selectedValue'] = selected_value
+        return JsonResponse({'status': 'success'})
+    else:
+        return HttpResponse('请求方法错误！')
+``` -->
+
+</body>
+</html>

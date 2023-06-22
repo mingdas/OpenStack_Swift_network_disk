@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="/static/img/favicon.ico">
+
+    <title>Navbar Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/bs/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/bs/css/navbar.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]>
+    <script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<!--    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">-->
+	<script src="/static/bs/js/jquery.min.js"></script>
+	<script >
+        //显示模态框
+function modalOpen() {
+	//获取模态框对象   getElementsByClassName获取到的是一个数组对象
+    let modal = document.getElementsByClassName("modal-box")[0];
+    //获取浏览器当前宽高
+    let documentWidth = window.innerWidth;
+    let documentHeight = window.innerHeight;
+    //获取模态框宽度
+    let modalWidth = modal.offsetWidth;
+    //模态框距离浏览器右侧的距离就是（浏览器宽度-模态框宽）/ 2.0
+    //注意，需要把结果转为字符串类型
+    modal.style.left = ((documentWidth - modalWidth) / 2.0).toString();
+    //设置为可见
+    modal.style.visibility = "visible";
+}
+
+//模态框关闭
+function modalClose() {
+	//获取模态框
+    let modal = document.getElementsByClassName("modal-box")[0];
+    //设置为不可见
+    modal.style.visibility = "hidden";
+}
+
+
+
+
+
+    </script>
+    <style>
+    .main{
+            width:100%;
+            height:500px;
+            margin:0 auto;
+            overflow:hidden;
+        }
+        .main .left{
+            width:12%;
+            height:400px;
+            margin-right:80px;
+            float:left;
+        }
+        .main .right{
+            left: 50px;
+            width:70%;
+            height:400px;
+
+            float:left;
+        }
+
+    </style>
+
+</head>
+
+<body>
+{% include 'header.html' %}
+
+<div class="container">
+
+
+    <!-- Main component for a primary marketing message or call to action -->
+    <div class="jumbotron">
+        <div class="main">
+            <div class="left">
+                <ul class="nav nav-pills nav-stacked">
+                    <li role="presentation" class="active"><a href="#">我的文件</a></li>
+                    <li role="presentation "><a href="#">图片</a></li>
+                    <li role="presentation"><a href="#">音频</a></li>
+                    <li role="presentation"><a href="#">文本</a></li>
+                    <li role="presentation"><a href="#">视频</a></li>
+
+                </ul>
+            </div>
+
+
+            <div class="right">
+                <ul class="breadcrumb">
+                    <li><a href="#">首页</a> <span class="divider">/</span></li>
+                    <li><a href="#">Library</a> <span class="divider">/</span></li>
+                    <li class="active">Data</li>
+                </ul>
+
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">容器列表</div>
+
+                    <!-- Table -->
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>name</th>
+                            <th>count</th>
+                            <th>bytes</th>
+                            <th>time</th>
+                        </tr>
+                        </thead>
+
+                        <div class="row">
+                            <tbody>
+                            <tr>
+                                <a href="/login/{{counter.name}}" name="counter_name">
+                                    <td>1</td>
+                                </a>
+                                <td>2</td>
+                                <td>3</td>
+                                <td>....</td>
+                                <td width="50px">
+                                    <form action="login" method="get">
+                                        <div class="btn-group" role="group" aria-label="...">
+                                            <a href="login">
+                                                <button type="button" onclick="javascript:return del();"
+                                                        class="btn btn-default" >Middle
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </form>
+                                </td>
+                                <td width="50px">
+                                    <div class="btn-group" role="group" aria-label="...">
+                                        <button type="button" class="btn btn-default" data-bs-toggle="modal" data-bs-target="#myModal">Middle</button>
+                                    </div>
+                                </td>
+
+                            </tr>
+                            </tbody>
+
+                        </div>
+                    </table>
+                    <div class="container">
+
+                    </div>
+                    <h2>创建模态框（Modal）</h2>
+<div class="modal-box">
+	<!--顶部-->
+	<div class="modal-box-top">
+		<div class="modal-box-title">标题</div>
+		<!--关闭按钮 &times;会被转义成乘号（×）看上去就是关闭符号-->
+		<!--关闭逻辑-->
+		<button onclick="modalClose()" class="modal-close">
+		</button>
+	</div>
+	<!--主体-->
+	<div class="modal-box-content">
+        <b>21231321</b>
+        <b>1231231231</b>
+	</div>
+	<!--底部-->
+	<div class="modal-box-bottom">
+	</div>
+</div>
+
+<script>
+
+    function del() {
+var msg = "您真的确定要删除吗？\n\n请确认！";
+if (confirm(msg)==true){
+return true;
+}else{
+return false;
+}
+}
+
+</script>
+
+
+<script src="static/bs/js/jquery-1.12.4.min.js"
+        integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
+        crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.6.0.min.js"><\/script>')</script>
+<script src="/static/bs/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+</body>
+
+<div class="modal" id="myModal2">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+
+                                <!-- 模态框头部 -->
+                                <div class="modal-header">
+                                    <h4 class="modal-title">模态框标题</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+
+                                <!-- 模态框内容 -->
+                                <div class="modal-body">
+                                    模态框内容..
+                                </div>
+
+                                <!-- 模态框底部 -->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">关闭</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+</html>

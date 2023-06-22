@@ -1,0 +1,45 @@
+http://192.168.217.12/horizon
+#### 账户信息
++ Domain：`default`
++ User：`admin`
++ Password：<自定义设置的密码><1234>
+source /openstack/admin-openrc
+mysql -u root -p
+1234
+vim /etc/network/interfaces
+*A4B6157319038724E3560894F7F932C8886EBFCF
+[database]
+## <KEYSTONE_DBPASS>注意和前面赋予权限一致
+#大约在550行 查询 非编辑状态输入  /[data
+:550    快速到550行
+
+swift stat -v
+export url="http://controller:8080/v1/AUTH_76411f617a23498689d108a5fb71a24d"
+export token="X-Auth-Token:gAAAAABhqdu-6nAkHDlEPcKu1PMtjzz7NmUZQM6_ToV9I1imE5wjzIwq2Me3ZqGQBkwVyA0DzUiPTHMiCxxkLzH6o93AqnCWiAVwdRNhZk_E8MHL29q35GajfaS2BsPqhDw82mAKUG4V_sueVIMx5MM87x4a41_QvItgsb_2QM8LzdBzdWTinKY"
+
+swift stat 获取集群信息
+swift list 获取容器清单
+swift delete animals 删除容器
+swift post animals 创建新容器animals
+swift list animals 获取容器所包含的对象
+swift upload animals bear.txt 上传对象到容器中（一个、多个文件或目录）
+swift download animals bear.txt 下载对象
+swift delete animals bear.txt删除对象
+分页：?marker=bear.txt\&limit=2
+下载：GET   >
+复制：PUT  -H "X-Copy-From:/animals/bear.txt"
+curl -X HEAD -i -H $token $url/xzm123
+curl -X GET -i -H $token $url
+curl -X PUT -i -H $token $url/xzm1
+curl -X PUT -i -H $token -T xzmobj1.txt $url/xzm1/xzmobj1.txt
+curl -X POST -i -H $token -H "X-Object-Meta-Location:CDUESTC" $url/xzm1/xzmobj1.txt
+curl -X POST -i -H $token -H "X-Object-Meta-Location:Easter Holiday" -H "X-Object-Meta-Location:Cambridge" -H "Content-Length:0" $url/xzm1/xzmobj1.txt
+动态大对象：curl -X PUT -i -H $token -H "X-Object-Manifest:animals/Tiger_" -H "Content-Length:0" $url/animals/BigTiger
+静态大对象：curl -X PUT -i -H $token -T TigerManifest.json $url/animals/TigerManifest?multipart-manifest=put
+
+curl -X PUT -i -H $token -T Holidays_1941310312 $url/xzm1/Holidays_0312
+curl -X POST -i -H $token -H "X-Object-Meta-Location:year:2021" -H "X-Object-Meta-Cambridge:time:0203" -H "X-Object-Meta-Oxford:time:0204" -H "X-Object-Meta-London:time:0205" $url/xzm1/Holidays_0312
+
+curl -X PUT -i -H $token -T Holidays_1941310312 -H "X-Object-Meta-Location:year:2021" -H "X-Object-Meta-Tennis:team:yellow" -H "X-Object-Meta-Badminton:team:blue" -H "X-Object-Meta-Soccer:team:red" $url/xzm1/Sports_0312
+
+curl -X PUT -i -H $token -T Holidays_1941310312 -H "X-Object-Meta-Location:year:2021" -H "X-Object-Meta-BMW:plate:RK05 TXW" -H "X-Object-Meta-Benz:plate:FL52 EEG" -H "X-Object-Meta-Audi:plate:DG63 FFL $url/xzm1/Cars_0312

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    前端代码：```
+<!-- 引入必要的css和js文件 -->
+<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+
+<!-- select标签 -->
+<select class="selectpicker" data-live-search="true">
+    <option value="">请选择</option>
+</select>
+
+<script>
+    $(function(){
+        // ajax获取数据
+        $.ajax({
+            url: '/get_data1/',
+            success: function(data){
+                var options_html = '';
+                for(var i=0; i<data.length; i++){
+                    options_html += '<option value="'+ data[i].id +'"'
+                    if(i==0){
+                        options_html += ' selected'
+                    }
+                    options_html += '>'+ data[i].name +'</option>';
+                }
+                $('.selectpicker').html(options_html);
+                // bootstrap-select初始化
+                $('.selectpicker').selectpicker();
+                // 绑定change事件
+                $('.selectpicker').on('changed.bs.select', function(){
+                    var selected_id = $(this).val();
+                    // ajax传回选中的id
+                    $.ajax({
+                        url: '/set_selected_id/',
+                        type: 'POST',
+                        data: {'selected_id': selected_id},
+                        success: function(){
+                            // do something
+                        }
+                    });
+                });
+            }
+        });
+    });
+</script>
+<!-- ```
+
+Django代码：
+
+```
+# api视图函数
+from django.http import JsonResponse, HttpResponseBadRequest
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render
+
+def get_data(request):
+    data = [{'id': 1, 'name': '选项1'},
+            {'id': 2, 'name': '选项2'},
+            {'id': 3, 'name': '选项3'}]
+    return JsonResponse(data, safe=False)
+    
+@csrf_exempt
+def set_selected_id(request):
+    if request.method == 'POST':
+        selected_id = request.POST.get('selected_id')
+        if selected_id:
+            request.session['selected_id'] = selected_id
+            return JsonResponse({'success': True})
+    return HttpResponseBadRequest()
+    
+# 模板视图函数
+def index(request):
+    selected_id = request.session.get('selected_id')
+    return render(request, 'index.html', {'selected_id': selected_id})
+``` -->
+</body>
+</html>

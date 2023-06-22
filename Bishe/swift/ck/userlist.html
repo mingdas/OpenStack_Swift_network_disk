@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% block title %}容器{% endblock %}
+{% block right %}
+<div class="col-md-9 col-md-offset-1 right">
+	<ul class="breadcrumb">
+		<li><a href="/pro/" target="_self">项目</a> <span class="divider">/</span></li>
+		<!-- <li><a href="#" target="_self">{{ counte_name }}{{ request.session.count_name }}</a> <span class="divider">/</span>
+		</li>
+		<li class="active">Data</li> -->
+	</ul>
+
+	<div class="panel panel-default">
+	<!-- Default panel contents -->
+	<div class="panel-heading">
+		<tr>
+            <!-- <form action="/cre_user/" method="post">
+            	<input type="text" name="user_name" placeholder="用户名称"/>
+                <input type="text" name="user_description" placeholder="项目描述"/>
+                <button type="submit" class="btn btn-default btn-sm">
+                	<span class="glyphicon glyphicon-plus"></span> 创建项目
+            	</button>
+        	</form> -->
+        	<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#createModal" data-whatever="Create User">创建用户</button>
+		</tr>
+	</div>
+
+	<!-- Table -->
+	<div class="row panel-body" style="height: 100%;width:100%; overflow:scroll;">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>名称</th>
+					<th>描述</th>
+					<th>用户标识</th>
+					<th>域名</th>
+					<th>已启用</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			{% for dp in dousr %}
+			<tbody>
+				<tr>
+					<td>{{dp.usr.name}}</td>
+					<td>{{dp.usr.description}}</td>
+					<td>{{dp.usr.id}}</td>
+					<td>{{dp.do.name}}</td>
+					<td>{{dp.usr.enabled}}</td>
+					<td>
+					<ul class="nav navbar-nav">
+              			<li class="dropdown">
+          					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+								<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+              					管理用户<span class="caret"></span></a>
+          					<ul class="dropdown-menu">
+            					<li><a class="btn btn-default" data-toggle="modal" data-target="#{{dp.usr.id}}">删除</a></li>
+            					<li><a class="btn btn-default" data-toggle="modal" data-target="#{{dp.usr.id}}d" data-whatever="{{dp.usr.id}}">编辑</a></li>
+          					</ul>
+        	  			</li>
+            		</ul>
+					</td>
+					<!-- <td width="50px">
+						<form action="/del_user/{{dp.usr.id}}" method="get">
+							<div class="btn-group btn-group-xs" role="group" aria-label="...">
+								<button type="submit" class="btn btn-danger"
+									onclick="return del();">删除
+                                </button>
+                            </div>
+						</form>
+					</td> -->
+					<td>
+					<!-- Button trigger modal -->
+					<!-- <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#{{dp.usr.id}}">删除</button> -->
+					<!-- deleteModal -->
+					<div class="modal fade" id="{{dp.usr.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  						<div class="modal-dialog" role="document">
+    						<div class="modal-content">
+      							<div class="modal-header">
+        							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        							<h4 class="modal-title" id="myModalLabel">操作提示：</h4>
+      							</div>
+      							<form method="post" action="/del_user/">
+      							<div class="modal-body">
+          							<div class="form-group">
+            							<label for="recipient-name" class="control-label">确认删除？</label>
+            							<p>{{dp.usr.name}}</p>
+          							</div>
+          							<div class="form-group">
+            							<label for="message-text" class="control-label">ID:</label>
+            							<input type="text" class="form-control" id="recipient-name" value="{{dp.usr.id}}" name="user_id">
+          							</div>
+      							</div>
+     				 			<div class="modal-footer">
+        							<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        							<button type="submit" class="btn btn-primary">确认</button>
+      							</div>
+      							</form>
+    						</div>
+  						</div>
+					</div>
+					<!-- updateModal -->
+					<div class="modal fade updateModal" id="{{dp.usr.id}}d" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  						<div class="modal-dialog" role="document">
+    						<div class="modal-content">
+      							<div class="modal-header">
+       								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        							<h4 class="modal-title" id="exampleModalLabel">操作提示：</h4>
+      							</div>
+      							<form method="post" action="/upd_user/">
+      							<div class="modal-body">
+          							<div class="form-group">
+          								<input class="update form-control" id="recipient-name" name="user_id">
+            							<label for="recipient-name" class="control-label">用户名称：</label>
+            							<input type="text" name="user_name" placeholder="{{dp.usr.name}}"/>
+          							</div>
+          							<div class="form-group">
+            							<label for="message-text" class="control-label">用户描述：</label>
+            							<input type="text" name="user_description" placeholder="{{dp.usr.description}}"/>
+          							</div>
+      							</div>
+      							<div class="modal-footer">
+        							<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        							<button type="submit" class="btn btn-primary">确认</button>
+      							</div>
+      							</form>
+    						</div>
+  						</div>
+					</div>
+					</td>
+				</tr>
+			</tbody>
+			{% endfor %}
+		</table>
+	</div>
+	</div>
+</div>
+<!-- createModal -->
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">操作提示：</h4>
+      </div>
+      <form method="post" action="/cre_user/">
+      <div class="modal-body">
+          <div class="form-group">
+            <label for="recipient-name" class="control-label">用户名称：</label>
+            <input type="text" name="user_name" placeholder="user name"/>
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="control-label">用户密码：</label>
+            <input type="text" name="user_password" placeholder="user password"/>
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="control-label">用户描述：</label>
+            <input type="text" name="user_description" placeholder="user description"/>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="submit" class="btn btn-primary">确认</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" language="JavaScript">
+$('#createModal').on('show.bs.modal', function (event) {
+	  var button = $(event.relatedTarget) // Button that triggered the modal
+	  var recipient = button.data('whatever') // Extract info from data-* attributes
+	  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+	  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+	  var modal = $(this)
+	  modal.find('.modal-title').text('操作为： ' + recipient)
+	  /*modal.find('.modal-body .update').val(recipient)*/
+})
+$('.updateModal').on('show.bs.modal', function (event) {
+	  var button = $(event.relatedTarget) // Button that triggered the modal
+	  var recipient = button.data('whatever') // Extract info from data-* attributes
+	  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+	  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+	  var modal = $(this)
+	  modal.find('.modal-title').text('操作为： ' + 'Update User')
+	  modal.find('.modal-body .update').val(recipient)
+})
+function del() {
+	var msg = "您真的确定要删除吗？\n\n请确认！";
+		if (confirm(msg)==true){
+			return true;
+		}else{
+			return false;
+		}
+	}
+</script>
+{% endblock %}

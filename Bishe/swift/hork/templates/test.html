@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script>var ts1 = jQuery.noConflict(true);</script>
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- 1. 后端传递json数据
+
+先定义一个视图函数来传递json数据：
+
+```python
+from django.http import HttpResponse
+import json
+
+def get_data(request):
+    data = [
+        {'name': 'Tom', 'age': 25, 'gender': 'Male'},
+        {'name': 'Lucy', 'age': 18, 'gender': 'Female'},
+        {'name': 'Jack', 'age': 30, 'gender': 'Male'},
+    ]
+    return HttpResponse(json.dumps(data), content_type='application/json')
+```
+
+2. 前端使用for标签将数据显示到table表格里
+
+在html页面中使用for标签将json数据显示到table表格里：
+
+```html -->
+  <table id="myTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Gender</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in data %}
+      <tr>
+        <td>{{ item.name }}</td>
+        <td>{{ item.age }}</td>
+        <td>{{ item.gender }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <!-- ```
+
+3. 引用DataTables
+
+在html页面中引入DataTables相关的css和js：
+
+```html -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.23/datatables.min.css" />
+  <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.23/datatables.min.js"></script>
+  <!-- ```
+
+4. 实现翻页、排序、搜索、页脚功能
+
+在js代码中使用DataTables初始化table表格，并设置相关参数：
+
+```javascript -->
+  <script>
+    // $(document).ready(function() {
+    (function databas($) {
+      $('#myTable').DataTable({
+        "paging": true, // 是否开启翻页功能
+        "lengthChange": true, // 是否允许用户改变每页显示数据量
+        "searching": true, // 是否开启搜索功能
+        "ordering": true, // 是否开启排序功能
+        "info": true, // 是否显示表格信息，如当前页数、总页数等
+        "autoWidth": false, // 是否自动适应宽度
+        "language": {
+          "lengthMenu": "显示 _MENU_ 条数据", // 改变每页显示数据量的提示信息
+          "zeroRecords": "没有找到匹配的记录", // 搜索结果为空时的提示信息
+          "info": "第 _PAGE_ 页 / 共 _PAGES_ 页", // 显示表格信息的格式
+          "infoEmpty": "没有数据", // 表格数据为空时的提示信息
+          "infoFiltered": "(从 _MAX_ 条记录中过滤)" // 显示过滤记录数的提示信息
+        }
+      });
+    })(ts1);
+    var res = databas();
+    if (res) {
+      alert("函数执行成功")
+    } else {
+      alert("函数执行失败")
+    }
+// );
+  </script>
+  <!-- ```
+
+这样就完成了对table表格的翻页、排序、搜索、页脚功能的实现。 -->
+
+</body>
+
+</html>

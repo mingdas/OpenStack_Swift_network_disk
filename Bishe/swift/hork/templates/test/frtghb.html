@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 引用 Bootstrap 和 jQuery 库以及 Bootstrap-select 插件的 CSS 和 JS 文件 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 前端实现代码：
+1. 引用 Bootstrap 和 jQuery 库以及 Bootstrap-select 插件的 CSS 和 JS 文件。
+2. 在 HTML 中添加一个 <select> 元素，并使用 Bootstrap-select 插件初始化它。
+3. 使用 jQuery AJAX 请求从 Django 后端获取数据，并根据返回的 JSON 数据动态生成 <option> 标签。
+4. 为 <select> 元素添加一个事件监听器，当选中的值发生变化时，使用 jQuery AJAX 向 Django 后端发送选中的值，并保存到 session 中。
+
+```html -->
+
+
+    <!-- 在 HTML 中添加一个 <select> 元素，并使用 Bootstrap-select 插件初始化它 -->
+    <!-- <select class="selectpicker" data-live-search="true">
+        <option>Select option</option>
+    </select> -->
+    <select id="my-select" class="selectpicker" data-style="btn-info">
+        <option></option>
+    </select>
+
+    <script>
+        $(document).ready(function () {
+            // 使用 jQuery AJAX 请求从 Django 后端获取数据，并根据返回的 JSON 数据动态生成 <option> 标签
+            $.ajax({
+                url: '/get_options/',  // Django 后端处理该请求的 URL
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // 清空下拉框选项
+                    $('#my-select').empty();
+                    var options = '';
+                    for (var i = 0; i < data.length; i++) {
+                        options += '<option value="' + data[i].value + '">' + data[i].id + '</option>';
+                    }
+                    $('.selectpicker').append(options);
+                    // 使用 Bootstrap-select 插件重新初始化 <select> 元素
+                    $('.selectpicker').selectpicker('refresh');
+                    // 设置默认选中第一条数据
+                    $('.selectpicker').selectpicker('val', $('.selectpicker option:first').val());
+                },
+                error: function () {
+                    console.error('Error fetching options data.');
+                }
+            });
+
+            // 为 <select> 元素添加一个事件监听器，当选中的值发生变化时，使用 jQuery AJAX 向 Django 后端发送选中的值，并保存到 session 中
+            $('.selectpicker').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+                var selectedValue = $('.selectpicker').val();
+                $.ajax({
+                    url: '/set_session/',  // Django 后端处理该请求的 URL
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        'selected_value': selectedValue
+                    },
+                    success: function (data) {
+                        console.log('Session set successfully.');
+                    },
+                    error: function () {
+                        console.error('Error setting session.');
+                    }
+                });
+            });
+        });
+    </script>
+    <!-- ```
+
+Django 后端代码：
+
+1. 定义一个视图函数，用于处理从前端发送过来的请求，根据请求类型返回 JSON 数据或将选中的值保存到 session 中。
+2. 在 urls.py 中将该视图函数绑定到对应的 URL 上。
+
+```python
+from django.shortcuts import render, HttpResponse
+import json
+
+def get_options(request):
+    # 模拟生成选项数据的过程，实际中可能是从数据库或其它 API 获取
+    options = [
+        {'text': 'Option 1', 'value': 'option1'},
+        {'text': 'Option 2', 'value': 'option2'},
+        {'text': 'Option 3', 'value': 'option3'},
+    ]
+    # 返回 JSON 格式的数据
+    return HttpResponse(json.dumps(options), content_type='application/json')
+
+def set_session(request):
+    if request.method == 'POST':
+        selected_value = request.POST.get('selected_value')
+        # 将选中的值保存到 session 中
+        request.session['selected_value'] = selected_value
+        return HttpResponse(json.dumps({'success': True}), content_type='application/json')
+    else:
+        return HttpResponse(json.dumps({'success': False}), content_type='application/json')
+
+# 在 urls.py 中将该视图函数绑定到对应的 -->
+
+</body>
+
+</html>

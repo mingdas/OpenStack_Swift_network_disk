@@ -1,0 +1,240 @@
+{% extends "base.html" %} {% block Content %}
+<!-- start: Content -->
+<div id="content" class="span10">
+  <ul class="breadcrumb">
+    <li>
+      <i class="icon-home"></i>
+      <a href="index.html">Home</a>
+      <i class="icon-angle-right"></i>
+    </li>
+    <li><a href="#">Typography</a></li>
+    <i class="icon-angle-right"></i>
+    <li><a href="/prouser/" target="_self">验证</a></li>
+    <i class="icon-angle-right"></i>
+    <li><a href="/put_pro_usr_user_role/" target="_self">为项目中的用户分配user角色</a></li>
+    <i class="icon-angle-right"></i>
+    <li><a href="/get_role/" target="_self">列出角色</a></li>
+  </ul>
+
+  <div class="row-fluid sortable">
+    <div class="box span9">
+      <div class="box-header">
+        <h2>
+          <i class="halflings-icon font"></i>
+          <span class="break"></span>
+          Swift
+        </h2>
+      </div>
+      <div class="box-content">
+        <div class="page-header">
+          <h1>
+            <!-- 使用 Bootstrap-select 插件初始化select元素 -->
+            <div>
+              <select id="myselect1" class="selectpicker" data-style="btn-info" data-width="100%">
+                <option></option>
+              </select>
+            </div>
+            项目选择
+            <small>请先进行选择当前用户所在项目，每个用户会默认被分配一个项目，如需更多请联系管理员进行申请，一个项目可同时存在多个用户（即可进行文件共享）</small>
+          </h1>
+        </div>
+        <div class="row-fluid">
+          <div class="span4">
+            <img src="{{ STATIC_PREFIX }}img/cokg.png" alt="" srcset="">
+            <!-- <h3>Sample text and paragraphs</h3> -->
+            <p>
+              OpenStack Object Storage ( Swift ) 即对象存储，提供了强大的扩展性、冗余性和持久性
+            </p>
+            <p>
+              Swift 不是一个传统的文件系统，也不是一个块存储系统，而是一个可以存放大量非结构
+              化数据的、支持多租户的、可以高扩展的持久性对象存储系统。Swift通过RESTAPI来存放、
+              检索和删除容器中的对象。开发者可以直接通过 Swift API使用Swift服务，也可以通过多种
+              语言的客户库程序中的任何一个进行使用，比如Jaya、Python、Ruby、PHP和C#。
+            </p>
+
+          </div>
+          <div class="span4">
+            <img src="{{ STATIC_PREFIX }}img/yunup.png" alt="" srcset="">
+            <!-- <h3>Example body text</h3> -->
+            <p>
+              与传统的存储系统不同，Swift采用的是“数据最终一致”的设计思想。这种设计使得
+              Swift可以支持极大数量的并发连接和超量的数据集合。Swift使用普通的服务器来构建强大的
+              具有扩展性、冗余性和持久性的分布式对象存储集群，存储容量可达PB级。高扩展指的是它
+              可以从少数几个存储节点和磁盘驱动器扩展到可以存放PB级数据的几千个存储节点。Swif
+              可以进行横向扩展，没有单点故障。下面我们将介绍Swift最关键的几个特点和功能。
+            </p>
+          </div>
+          <div class="span4">
+            <img src="{{ STATIC_PREFIX }}img/cfile.png" alt="" srcset="">
+            <p>
+              对象( Object )就是存储在此系统中的真正的数据。数据可以为很多类型的文件，所以，
+              你可以存入照片、录像、文档、日志、数库备份、文件系统的快照，或者其他非结构化数据。
+            </p>
+            <!-- <div class="well">
+              <h1>h1. Heading 1</h1>
+              <h2>h2. Heading 2</h2>
+              <h3>h3. Heading 3</h3>
+              <h4>h4. Heading 4</h4>
+              <h5>h5. Heading 5</h5>
+              <h6>h6. Heading 6</h6>
+            </div> -->
+          </div>
+        </div>
+        <!--/row -->
+
+        <!-- <div class="row-fluid">
+          <div class="span12">
+            <h3>Example blockquotes</h3>
+            <div class="row-fluid">
+              <div class="span6">
+                <p>Default blockquotes are styled as such:</p>
+                <blockquote>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis.</p>
+                  <small>
+                    Someone famous in
+                    <cite title="">Body of work</cite>
+                  </small>
+                </blockquote>
+              </div>
+              <div class="span6">
+                <p>You can always float your blockquote to the right:</p>
+                <blockquote class="pull-right">
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis.</p>
+                  <small>
+                    Someone famous in
+                    <cite title="">Body of work</cite>
+                  </small>
+                </blockquote>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row-fluid">
+          <div class="span6">
+            <h3>More Sample Text</h3>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper
+              ligula sodales at. Nulla tellus elit, varius non commodo eget, mattis vel eros. In sed ornare nulla. Donec
+              consectetur, velit a pharetra ultricies, diam lorem lacinia risus, ac commodo orci erat eu massa. Sed sit
+              amet nulla ipsum. Donec felis mauris, vulputate sed tempor at, aliquam a ligula. Pellentesque non pulvinar
+              nisi.
+            </p>
+          </div>
+          <div class="span6">
+            <h3>And Paragraphs</h3>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper
+              ligula sodales at. Nulla tellus elit, varius non commodo eget, mattis vel eros. In sed ornare nulla. Donec
+              consectetur, velit a pharetra ultricies, diam lorem lacinia risus, ac commodo orci erat eu massa. Sed sit
+              amet nulla ipsum. Donec felis mauris, vulputate sed tempor at, aliquam a ligula. Pellentesque non pulvinar
+              nisi.
+            </p>
+          </div>
+        </div>
+        <div class="row-fluid">
+          <div class="span12">
+            <h2>Example use of Tooltips</h2>
+            <p>Hover over the links below to see tooltips:</p>
+            <div class="tooltip-demo well">
+              <p class="muted" style="margin-bottom: 0">
+                Tight pants next level keffiyeh
+                <a href="#" data-rel="tooltip" data-original-title="first tooltip">you probably</a>
+                haven't heard of them. Photo booth beard raw denim letterpress vegan messenger bag stumptown.
+                Farm-to-table seitan, mcsweeney's fixie sustainable quinoa 8-bit american appadata-rel
+                <a href="#" data-rel="tooltip" data-original-title="Another tooltip">have a</a>
+                terry richardson vinyl chambray. Beard stumptown, cardigans banh mi lomo thundercats. Tofu biodiesel
+                williamsburg marfa, four loko mcsweeney's cleanse vegan chambray. A
+                <a href="#" data-rel="tooltip" data-original-title="Another one here too">really ironic</a>
+                artisan whatever keytar, scenester farm-to-table banksy Austin
+                <a href="#" data-rel="tooltip" data-original-title="The last tip!">twitter handle</a>
+                freegan cred raw denim single-origin coffee viral.
+              </p>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+    <!--/span-->
+
+    <div class="box span3">
+      <div class="box-header" data-original-title>
+        <h2>
+          <i class="halflings-icon list"></i>
+          <span class="break"></span>
+          目前可分类的文件类型
+        </h2>
+      </div>
+      <div class="box-content">
+        <ul>
+          <li>图片</li>
+          <li>文档</li>
+          <li>音频</li>
+          <li>视频</li>
+          <!-- <li>
+            Nulla volutpat aliquam velit
+            <ul>
+              <li>Phasellus iaculis neque</li>
+              <li>Purus sodales ultricies</li>
+              <li>Vestibulum laoreet porttitor sem</li>
+              <li>Ac tristique libero volutpat at</li>
+            </ul>
+          </li>
+          <li>Faucibus porta lacus fringilla vel</li>
+          <li>Aenean sit amet erat nunc</li>
+          <li>Eget porttitor lorem</li> -->
+        </ul>
+      </div>
+    </div>
+    <!--/span-->
+
+    <!-- <div class="box span3">
+      <div class="box-header" data-original-title>
+        <h2>
+          <i class="halflings-icon list"></i>
+          <span class="break"></span>
+          Ordered List
+        </h2>
+      </div>
+      <div class="box-content">
+        <ol>
+          <li>Lorem ipsum dolor sit amet</li>
+          <li>Consectetur adipiscing elit</li>
+          <li>Integer molestie lorem at massa</li>
+          <li>Facilisis in pretium nisl aliquet</li>
+          <li>Nulla volutpat aliquam velit</li>
+          <li>Faucibus porta lacus fringilla vel</li>
+          <li>Aenean sit amet erat nunc</li>
+          <li>Eget porttitor lorem</li>
+        </ol>
+      </div>
+    </div> -->
+    <!--/span-->
+
+    <!-- <div class="box span3">
+      <div class="box-header" data-original-title>
+        <h2>
+          <i class="halflings-icon list"></i>
+          <span class="break"></span>
+          Description List
+        </h2>
+      </div>
+      <div class="box-content">
+        <dl>
+          <dt>Description lists</dt>
+          <dd>A description list is perfect for defining terms.</dd>
+          <dt>Euismod</dt>
+          <dd>Vestibulum id ligula porta felis euismod semper eget lacinia odio sem nec elit.</dd>
+          <dd>Donec id elit non mi porta gravida at eget metus.</dd>
+          <dt>Malesuada porta</dt>
+          <dd>Etiam porta sem malesuada magna mollis euismod.</dd>
+        </dl>
+      </div>
+    </div> -->
+    <!--/span-->
+  </div>
+  <!--/row-->
+</div>
+<!--/.fluid-container-->
+
+<!-- end: Content -->
+{% endblock %}

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>项目用户管理</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+
+    <!-- <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+    <!-- <script src="{{ STATIC_PREFIX }}js/jquery.dataTables.min.js"></script> -->
+    <style>
+        /* Tables列内容居中 */
+        table>tbody>tr>td {
+            text-align: center;
+        }
+
+        div>p {
+            text-align: center;
+        }
+
+        /* Tables表头居中 */
+        table>thead:first-child>tr:first-child>th {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 align="center">项目用户管理<a href="/pro/" target="_self">
+            <span class="hidden-tablet">返回项目</span>
+        </a></h1>
+    <h2 align="center">当前项目：&nbsp;{{ request.session.pro_name }}</h2>
+
+    <div style="float: left; width: 48%; word-wrap: break-word">
+        <div>
+            <p>点击&nbsp;Admin&nbsp;为项目中的用户分配&nbsp;admin&nbsp;角色</p>
+        </div>
+        <div>
+            <p>点击&nbsp;User&nbsp;为项目中的用户分配&nbsp;user&nbsp;角色</p>
+        </div>
+        <div>
+            <p>&nbsp;</p>
+        </div>
+        <table id="example" class="hover row-border stripe" style="width:100%">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>全部用户</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div style="float: right; width: 48%; word-wrap: break-word">
+        <div>
+            <p>点击&nbsp;Admin&nbsp;取消为项目上的用户分配&nbsp;admin&nbsp;角色</p>
+        </div>
+        <div>
+            <p>点击&nbsp;User&nbsp;取消为项目上的用户分配&nbsp;user&nbsp;角色</p>
+        </div>
+        <div>
+            <p>点击&nbsp;Del&nbsp;取消为项目上的用户分配&nbsp;admin&nbsp;user&nbsp;角色</p>
+        </div>
+        <table id="example1" class="hover row-border stripe" style="width:100%">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>当前项目中的用户</th>
+                    <th>角色</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#example').DataTable({
+                // "pagingType": "full_numbers", //首页，尾页，上一页和下一页四个按钮,加上数字按钮
+                "lengthChange": true, //改变每页显示数据数量
+                "Filter": true, //过滤功能
+                "info": true,//页脚信息 
+                "autoWidth": true,//自动宽度 
+                "processing": true,	 //是否显示处理状态(排序的时候，数据很多耗费时间长的话，也会显示这个)
+                "ajax": {
+                    url: "/alluser/",
+                    type: 'GET',
+                    dataType: 'json',
+                    async: false,
+                    dataSrc: 'users'
+                },
+
+                "columns": [
+                    { "data": "id" },
+                    { "data": "name" },
+                    {
+                        "data": "id", "render": function (data, type, row, meta) {
+                            return '<button class="admin-btn" data-id="' + data + '">Admin</button> <button class="user-btn" data-id="' + data + '">User</button>';
+                        }
+                    }
+                ]
+
+            });
+            // Edit and Delete button functionality
+            $('#example tbody').on('click', '.admin-btn', function () {
+                var id = $(this).data('id');
+                // Send the row data to Django view for editing
+                $.ajax({
+                    url: '/put_admin_role/',
+                    type: 'POST',
+                    data: {
+                        user_id: id,
+                    },
+                    success: function (result) {
+                        location.reload();
+                    }, error: function () {
+                        console.error('分配用户失败');
+                    }
+                });
+            });
+            $('#example tbody').on('click', '.user-btn', function () {
+                var id = $(this).data('id');
+                // Delete the row data in Django view
+                $.ajax({
+                    url: '/put_user_role/',
+                    type: 'POST',
+                    data: {
+                        user_id: id,
+                    },
+                    success: function (result) {
+                        location.reload();
+                    }, error: function () {
+                        console.error('分配用户失败');
+                    }
+                });
+            });
+        });
+
+
+
+        $(document).ready(function () {
+            $('#example1').DataTable({
+                "paging": true, // 是否开启翻页功能
+                "searching": true, // 是否开启搜索功能
+                "ordering": true, // 是否开启排序功能
+                "language": {
+                    "lengthMenu": "显示 _MENU_ 条数据", // 改变每页显示数据量的提示信息
+                    "zeroRecords": "没有找到匹配的记录", // 搜索结果为空时的提示信息
+                    "info": "第 _PAGE_ 页 / 共 _PAGES_ 页", // 显示表格信息的格式
+                    "infoEmpty": "没有数据", // 表格数据为空时的提示信息
+                    "infoFiltered": "(从 _MAX_ 条记录中过滤)" // 显示过滤记录数的提示信息
+                },
+                // "pagingType": "full_numbers", //首页，尾页，上一页和下一页四个按钮,加上数字按钮
+                "lengthChange": true, //改变每页显示数据数量
+                "Filter": true, //过滤功能
+                "info": true,//页脚信息 
+                "autoWidth": true,//自动宽度 
+                "processing": true,	 //是否显示处理状态(排序的时候，数据很多耗费时间长的话，也会显示这个)
+                "ajax": {
+                    url: "/prouser/",
+                    type: 'GET',
+                    dataType: 'json',
+                    async: false,
+                    dataSrc: 'users'
+                },
+
+                "columns": [
+                    { "data": "id" },
+                    { "data": "name" },
+                    { "data": "role_name" },
+                    {
+                        "data": "id", "render": function (data, type, row, meta) {
+                            return '<button class="delete-admin" data-id="' + data + '">Admin</button> <button class="delete-user" data-id="' + data + '">User</button> <button class="delete" data-id="' + data + '">Del</button>';
+                        }
+                    }
+                ]
+
+            });
+            // Edit and Delete button functionality
+            $('#example1 tbody').on('click', '.delete-admin', function () {
+                var id = $(this).data('id');
+                // Send the row data to Django view for editing
+                $.ajax({
+                    url: '/del_admin_role/',
+                    type: 'POST',
+                    data: {
+                        user_id: id,
+                    },
+                    success: function (result) {
+                        location.reload();
+                    }, error: function () {
+                        console.error('分配用户失败');
+                    }
+                });
+            });
+            $('#example1 tbody').on('click', '.delete-user', function () {
+                var id = $(this).data('id');
+                // Delete the row data in Django view
+                $.ajax({
+                    url: '/del_user_role/',
+                    type: 'POST',
+                    data: {
+                        user_id: id,
+                    },
+                    success: function (result) {
+                        location.reload();
+                    }, error: function () {
+                        console.error('分配用户失败');
+                    }
+                });
+            });
+            $('#example1 tbody').on('click', '.delete', function () {
+                var id = $(this).data('id');
+                // Delete the row data in Django view
+                $.ajax({
+                    url: '/del_pro_user/',
+                    type: 'POST',
+                    data: {
+                        user_id: id,
+                    },
+                    success: function (result) {
+                        location.reload();
+                    }, error: function () {
+                        console.error('分配用户失败');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
+<!-- ```
+
+Django的代码：
+
+```python
+from django.shortcuts import render
+from django.http import JsonResponse
+
+def index(request):
+    return render(request, 'index.html')
+
+def data(request):
+    # Get data from database
+    data = [
+        {
+            'id': 1,
+            'name': 'John Doe',
+            'email': 'john@example1.com',
+            'age': 30,
+            'gender': 'Male'
+        },
+        {
+            'id': 2,
+            'name': 'Jane Doe',
+            'email': 'jane@example1.com',
+            'age': 25,
+            'gender': 'Female'
+        },
+        {
+            'id': 3,
+            'name': 'Mike Smith',
+            'email': 'mike@example1.com',
+            'age': 40,
+            'gender': 'Male'
+        },
+        {
+            'id': 4,
+            'name': 'Sara Johnson',
+            'email': 'sara@example1.com',
+            'age': 28,
+            'gender': 'Male'
+        }]
+    # 返回 JSON 格式的数据
+    return HttpResponse(json.dumps(data), content_type='application/json') -->

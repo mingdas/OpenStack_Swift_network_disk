@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="shortcut icon" href="/static/img/favicon.ico" />
+
+    <title>{% block title %}{% endblock %}</title>
+    {% block bcss %}
+    <!-- Bootstrap core CSS -->
+    <link href="/static/bs/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Custom styles for this template -->
+    <link href="/static/bs/css/navbar.css" rel="stylesheet" />
+    <link href="/static/bs/css/layuim.css" rel="stylesheet" />
+    <script src="/static/bs/js/layui.js"></script>
+    {% endblock %}
+  </head>
+  <body>
+    {% block style %}
+    <style>
+      body {
+      overflow:scroll;}
+      a img {
+      height: 30px;
+      width: 30px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      }
+      .right{
+      height: 50%;
+      margin-left: 50px;
+      }
+    </style>
+    {% endblock %}
+	{% block header %} {% include 'header.html' %} {% endblock %}
+    {% block content %}
+    <div class="container-fluid">
+      <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron jumbotron-fluid">
+        <div class="row">
+          <div class="col-md-2">
+       <!-- <ul class="nav nav-pills nav-stacked">
+              <li role="presentation" class="active">
+                <a href="#">我的文件</a>
+              </li>
+              <li role="presentation "><a href="#">图片</a></li>
+              <li role="presentation"><a href="#">音频</a></li>
+              <li role="presentation"><a href="#">文本</a></li>
+              <li role="presentation"><a href="#">视频</a></li>
+            </ul> -->
+        <div class="layui-side">
+            <div class="layui-side-scroll">
+                <ul class="layui-nav layui-nav-tree nav nav-pills nav-stacked" lay-filter="test">
+                    <li class="layui-nav-item layui-nav-itemed active" role="presentation">
+                        <a class="" href="javascript:;" target="_self"><img alt="" src="/static/img/xm.png">项目</a>
+                        <dl class="layui-nav-child">
+                            <dd>
+                                <a href="javascript:;" target="_self" class="menu_three" role="presentation">计算</a>
+                                <ol class="layui-nav-child" style="display: none;">
+                                    <li><a href="javascript:;" target="_self">&nbsp&nbsp&nbsp概述</a></li>
+                                    <li><a href="/serlist/" target="_self">&nbsp&nbsp&nbsp实例</a></li>
+                                    <li><a href="/imalist/" target="_self">&nbsp&nbsp&nbsp映像</a></li>
+                                    <li><a href="" target="_self">&nbsp&nbsp&nbsp访问 & 安全</a></li>
+                                </ol>
+                            </dd>
+                            <dd><a href="javascript:;" target="_self" class="menu_three" role="presentation">网络</a>
+                                <ol class="layui-nav-child" style="display: none;">
+                                    <li><a href="javascript:;" target="_self">&nbsp&nbsp&nbsp网络拓扑</a></li>
+                                    <li><a href="javascript:;" target="_self">&nbsp&nbsp&nbsp网络</a></li>
+                                    <li><a href="javascript:;" target="_self">&nbsp&nbsp&nbsp路由器</a></li>
+                                    <li><a href="javascript:;" target="_self">&nbsp&nbsp&nbsp超链接</a></li>
+                                </ol>
+                            </dd>
+                            <dd><a href="javascript:;" target="_self" class="menu_three" role="presentation">对象存储</a>
+                            	<ol class="layui-nav-child" style="display: none;">
+                                    <li><a href="javascript:;" target="_self">&nbsp&nbsp&nbsp容器</a></li>
+                                </ol>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item layui-nav-itemed active" role="presentation">
+                        <a class="" href="javascript:;" target="_self"><img alt="" src="/static/img/gly.png"">管理员</a>
+                        <dl class="layui-nav-child">
+                            <dd>
+                                <a href="javascript:;" target="_self" class="menu_three" role="presentation">系统</a>
+                                <ol class="layui-nav-child" style="display: none;">
+                                    <li><a href="javascript:;" target="_self">&nbsp&nbsp&nbsp概述</a></li>
+                                    <li><a href="javascript:;" target="_self">&nbsp&nbsp&nbsp管理程序</a></li>
+                                    <li><a href="javascript:;" target="_self">&nbsp&nbsp&nbsp主机聚集</a></li>
+                                    <li><a href="/serlist/" target="_self">&nbsp&nbsp&nbsp实例</a></li>
+                                    <li><a href="/fla/" target="_self">&nbsp&nbsp&nbspflavor 数</a></li>
+                                    <li><a href="/imalist/" target="_self">&nbsp&nbsp&nbsp映像</a></li>
+                                    <li><a href="javascript:;" target="_self">&nbsp&nbsp&nbsp网络</a></li>
+                                    <li><a href="javascript:;" target="_self">&nbsp&nbsp&nbsp路由器</a></li>
+                                    <li><a href="javascript:;" target="_self">&nbsp&nbsp&nbsp缺省值</a></li>
+                                    <li><a href="javascript:;" target="_self">&nbsp&nbsp&nbsp元数据定义</a></li>
+                                    <li><a href="javascript:;" target="_self">&nbsp&nbsp&nbsp系统信息</a></li>
+                                </ol>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item layui-nav-itemed active" role="presentation">
+                        <a class="" href="javascript:;" target="_self"><img alt="" src="/static/img/sfgl.png" style="height: 35px;width:35px;">身份管理</a>
+                        <dl class="layui-nav-child">
+                            <dd>
+                                <a href="/pro/" target="_self" class="menu_three" role="presentation">项目</a>
+                            </dd>
+                            <dd>
+                            	<a href="/usr/" target="_self" class="menu_three" role="presentation">用户</a>
+                            </dd>
+                            <dd>
+                            	<a href="javascript:;" target="_self" class="menu_three" role="presentation">组</a>
+                            </dd>
+                            <dd>
+                            	<a href="javascript:;" target="_self" class="menu_three" role="presentation">角色</a>
+                            </dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="layui-body">
+            <!-- 内容主体区域 -->
+            <!--<div style="padding: 15px;">内容主体区域</div>-->
+        </div>
+
+        <div class="layui-footer">
+            <!-- 底部固定区域 -->
+            © 云平台开发 - openstack
+        </div>
+    </div>
+    
+          
+          {% block right %}
+          <div class="col-md-9 col-md-offset-1 right">
+            <ul class="breadcrumb">
+              <li>
+                <a href="/login/ret" target="_self">我的文件</a> <span class="divider">/</span>
+              </li>
+            </ul>
+            <div class="panel panel-default">
+              <!-- Default panel contents -->
+              <div class="panel-heading">
+                <tr>
+                  <form action="/login/cre/crename/cre_project/" method="post">
+                    <input type="text" name="cre_count" />
+                    <button type="submit" class="btn btn-default btn-sm">
+                      <span class="glyphicon glyphicon-plus"></span> 新建容器
+                    </button>
+                  </form>
+                </tr>
+              </div>
+
+              <!-- Table -->
+              <div class="row panel-body" style="height: 100%;width:100%; overflow: scroll">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>name</th>
+                      <th>count</th>
+                      <th>bytes</th>
+                      <th>time</th>
+                    </tr>
+                  </thead>
+                  {% for counter in accounts_resp %}
+                  <tbody>
+                    <tr>
+                      <td>
+                        <a href="/login/{{counter.name}}" target="_self" name="counter_name">{{counter.name}}</a>
+                      </td>
+                      <td>{{counter.count}}</td>
+                      <td>{{counter.bytes}}</td>
+                      <td>...</td>
+                      <td width="50px">
+                        <form action="/login/{{counter.name}}" method="get">
+                          <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                            <button type="submit" class="btn btn-default">查看容器</button>
+                          </div>
+                        </form>
+                      </td>
+                      <td width="50px">
+                        <!--<form action="delete" method="get">-->
+                        <form action="/login/delconter/{{counter.name}}" method="get">
+                          <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                            <button type="submit" class="btn btn-default">删除</button>
+                          </div>
+                        </form>
+                        <!--</form>-->
+                      </td>
+                    </tr>
+                  </tbody>
+                  {% endfor %}
+                </table>
+              </div>
+            </div>
+          </div>
+          {% endblock %}
+        </div>
+      </div>
+    </div>
+    {% endblock %}
+    <!-- Bootstrap core JavaScript
+================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/static/bs/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/bs/js/jquery-3.6.0.min.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+      window.jQuery ||
+        document.write(
+          '<script src="https://code.jquery.com/jquery-3.6.0.min.js"><\/script>'
+        );
+    </script>
+    {% block script %}
+    <script>
+        //JavaScript代码区域
+        layui.use(['element', 'jquery'], function () {
+            var element = layui.element, $ = layui.jquery;
+            $(".menu_three").on("click", function () {
+                
+                $(this).next().toggle();
+                $.each($(this).parent().siblings(), function (i, e) {
+                    $(e).find("ol").hide();;
+                });
+               
+            })
+            $("ol").on("click", "li a", function () {
+                $.each($(this).parent().siblings(), function (i, e) {
+                    $(e).find("a").removeClass('three_this')
+                });
+                $(this).addClass('three_this');                            // 添加当前元素的样式
+            })
+        });
+    </script>
+    {% endblock %}
+  </body>
+</html>

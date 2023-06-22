@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
+  <title>Document</title>
+</head>
+<body>
+  前端代码：```
+<!-- 引入bootstrap-select css和js文件 -->
+<!-- <link rel="stylesheet" href="/static/bootstrap-select/dist/css/bootstrap-select.min.css">
+<script src="/static/bootstrap-select/dist/js/bootstrap-select.min.js"></script> -->
+
+<!-- 页面中的select标签 -->
+<select id="my-select" class="selectpicker" data-width="100%">
+    <option>Loading...</option>
+</select>
+
+<script>
+$(function() {
+    //ajax异步获取数据
+    $.ajax({
+        url: '/getData/',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            //获取session中存储的当前选中的值
+            var selectedValue = sessionStorage.getItem('selectedValue');
+            var options = '';
+            //循环遍历数据，生成option标签
+            $.each(data, function(index, value) {
+                if(index === 0){
+                    options += '<option value="'+value.value+'" selected>'+value.text+'</option>';
+                }else{
+                    options += '<option value="'+value.value+'">'+value.text+'</option>';
+                }
+            });
+            //把option标签添加到select标签中
+            $('#my-select').html(options);
+            //初始化selectpicker
+            $('#my-select').selectpicker({
+                //当selectpicker初始化完成后，设置默认选中的值为session中存储的值
+                'refresh':function(){
+                    if(selectedValue){
+                        $(this).selectpicker('val',selectedValue);
+                    }
+                }
+            });
+            //当选项改变时，把当前选中的值存储到session中，并发送ajax请求将值传回django
+            $('#my-select').on('change',function(){
+                var selectedValue = $(this).val();
+                sessionStorage.setItem('selectedValue', selectedValue);
+                $.ajax({
+                    url: '/setSession/',
+                    type: 'GET',
+                    data:{
+                        'selectedValue':selectedValue
+                    },
+                    success: function(data) {
+                        console.log(data);
+                    }
+                });
+            })
+        },
+        error: function() {
+            alert('数据加载失败！');
+        }
+    });
+});
+</script>
+<!-- ```
+
+Django代码：
+
+```
+#在views.py中写ajax请求
+from django.shortcuts import render
+from django.http import JsonResponse
+
+def getData(request):
+    data = [
+        {'value': '1', 'text': '选项一'},
+        {'value': '2', 'text': '选项二'},
+        {'value': '3', 'text': '选项三'}
+    ]
+    return JsonResponse(data, safe=False)
+
+def setSession(request):
+    selectedValue = request.GET.get('selectedValue')
+    request.session['selectedValue'] = selectedValue
+    return JsonResponse({'status': 'success'}) -->
+```
+
+</body>
+</html>
